@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Simple Quiz</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <h2>Take a quiz and get prizes</h2>
+        <form method="POST" action="/cgi-bin/form.py">
+            <p>
+            <label for="name">Type name:</label>
+            <input type="text" id="name" placeholder="Ivan" name="name">
+            </p>
+            <p>
+            <label for="surname">Type surname:</label>
+            <input type="text" id="surname" placeholder="Ivanov" name="surname">
+            </p>
+            <hr>
+            <div>
+                <p>Choose your interests:</p>
+                <input type="checkbox" id="coding" name="interest" value="coding">
+                <label for="coding">Coding</label>
+            </div>
+            <div>
+                <input type="checkbox" id="music" name="interest" value="music">
+                <label for="music">Music</label>
+            </div>
+            <div>
+                <input type="checkbox" id="cooking" name="interest" value="cooking">
+                <label for="cooking">Cooking</label>
+            </div>
+            <div>
+                <input type="checkbox" id="games" name="interest" value="games">
+                <label for="games">Playing games</label>
+            </div>
+            <hr>
+            <div>
+                <p>Please select your age:</p>
+                <input type="radio" id="age1" name="age" value="30">
+                <label for="age1">0 - 30</label><br>
+                <input type="radio" id="age2" name="age" value="60">
+                <label for="age2">31 - 60</label><br>  
+                <input type="radio" id="age3" name="age" value="100">
+                <label for="age3">61 - 100</label><br><br>
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </body>
+</html>
