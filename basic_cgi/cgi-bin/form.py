@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 import cgi
 import html
+import os
+import http.cookies
+
+cookie = http.cookies.SimpleCookie(os.environ.get("HTTP_COOKIE"))
+visitor_counter = cookie.get("counter").value
+visitor_counter = int(visitor_counter) + 1 if visitor_counter else 0
+print(f"Set-Cookie: counter={visitor_counter}")
 
 form = cgi.FieldStorage()
 not_found = 'not found'
@@ -8,7 +15,6 @@ name = html.escape(form.getvalue('name', not_found))
 surname = html.escape(form.getvalue('surname', not_found))
 interests = form.getvalue('interest', not_found)
 age = form.getvalue('age', not_found)
-
 
 print("Content-type: text/html\n")
 print("""<!DOCTYPE HTML>
@@ -27,3 +33,5 @@ print(f"<p>Interests: {','.join(interests) if interests != not_found else not_fo
 print(f"<p>Age: {age}</p>")
 print("""</body>
         </html>""")
+        
+print(f"This form was submitted by: {visitor_counter}")
