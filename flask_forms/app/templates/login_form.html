@@ -1,0 +1,22 @@
+{% from '_render_field.html' import render_field %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login Form</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <h1>Basic Login Form</h1>
+        <form method="POST" action="{{ url_for('login_form') }}">
+            {{ form.csrf_token }}
+
+            {{ render_field(form.username) }}
+            {{ render_field(form.password) }}
+            
+            {{ render_field(form.recaptcha) }}
+
+            {{ form.submit() }}
+        </form>
+    </body>
+</html>
