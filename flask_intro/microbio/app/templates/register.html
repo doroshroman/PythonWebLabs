@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% from '_render_field.html' import render_field %}
+
+{% block content %}
+    {% for cat, msg in get_flashed_messages(True) %}
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-{{cat}}">{{msg}}</li>
+    </ul>
+    {%endfor %}
+    <br><p class="h2">Register</p><hr></br>
+    <form action="{{ url_for('register') }}" method="POST">
+        {{ form.hidden_tag() }}
+        <div class="md-form form-group w-50">
+            {{ render_field(form.username, placeholder=form.username.label.text)}}
+            {{ render_field(form.email) }}
+            {{ render_field(form.password) }}
+            {{ render_field(form.password2) }}
+            {{ form.submit(class_="btn btn-primary") }}
+        </div>
+    </form>
+{% endblock %}

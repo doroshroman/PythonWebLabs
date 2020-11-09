@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if title %}
+    {{title}} - Blog
+    {% else %}
+    Blog
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    {% for post in posts %}
+    <h1>{{post.author.username}}</h1> says: <b>{{post.body}}</b></p>
+    {% endfor %}
+
+{% endblock %}
