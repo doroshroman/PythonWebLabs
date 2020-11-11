@@ -1,4 +1,4 @@
-from flask import render_template, redirect, flash, url_for
+from flask import render_template, redirect, flash, url_for, request
 from app import app, db
 from .forms import RegistrationForm, LoginForm
 from .models import User, Post
@@ -19,6 +19,8 @@ def show_hobbies():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated():
+        return redirect(url_for('show_main_page'))
     reg_form = RegistrationForm()
     if reg_form.validate_on_submit():
         username = reg_form.username.data
@@ -44,11 +46,13 @@ def login():
     if login_form.validate_on_submit():
         email = login_form.email.data
         password = login_form.password.data
+        remember = login_form.remember.data
 
         user = User.query.filter_by(email=email).first()
         if user and user.check_password(password):
             flash(f'Welcome back {user.username}', 'info')
-            login_user(user)
+            login_user(user, remember=remember)
+            
             return redirect(url_for('account'))
         else:
             flash(f'Incorrect email or password', 'warning')
@@ -56,6 +60,7 @@ def login():
     return render_template('login.html', form=login_form)
 
 @app.route('/posts', methods=['GET'])
+@login_required
 def posts():
     posts = Post.query.all()
     return render_template('posts.html', posts=posts)
