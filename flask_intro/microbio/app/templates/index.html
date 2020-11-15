@@ -6,18 +6,7 @@
         <li class="list-group-item list-group-item-{{cat}}">{{msg}}</li>
     </ul>
     {%endfor %}
-    <br>
-    <div>
-        Blog:
-        {% if current_user.is_anonymous %}
-        <a href="{{ url_for('login') }}">Login</a>
-        {% else %}
-        <a href="{{ url_for('logout') }}">Logout</a>
-        {% endif %}
-        <a href="{{ url_for('posts') }}">Posts</a>
 
-    </div>
-    
     <div><h1>Welcome to my page!</h1></div>
     
     <div class="blocks"><img class="img-border" id="my_photo" src="{{ url_for('static', filename='/images/praha.jpg') }}"></div>

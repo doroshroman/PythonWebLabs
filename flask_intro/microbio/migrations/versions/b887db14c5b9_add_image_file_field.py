@@ -1,8 +1,8 @@
-"""users and posts tables
+"""add image file field
 
-Revision ID: 89f17fa8711a
+Revision ID: b887db14c5b9
 Revises: 
-Create Date: 2020-11-09 14:06:51.689777
+Create Date: 2020-11-12 12:30:34.107409
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '89f17fa8711a'
+revision = 'b887db14c5b9'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,6 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=64), nullable=True),
     sa.Column('email', sa.String(length=120), nullable=True),
+    sa.Column('image_file', sa.String(length=20), nullable=False),
     sa.Column('password_hash', sa.String(length=128), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
