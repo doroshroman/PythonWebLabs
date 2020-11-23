@@ -1,6 +1,6 @@
 from flask import render_template, redirect, flash, url_for, request
 from app import app, db
-from .forms import RegistrationForm, LoginForm, UpdateAccountForm
+from .forms import RegistrationForm, LoginForm, UpdateAccountForm, CreatePostForm, UpdatePostForm
 from .models import User, Post
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
@@ -45,7 +45,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('posts'))
+        return redirect(url_for('show_main_page'))
 
     login_form = LoginForm()
     if login_form.validate_on_submit():
@@ -68,8 +68,7 @@ def login():
         
     return render_template('login.html', form=login_form)
 
-@app.route('/posts', methods=['GET'])
-@login_required
+@app.route('/posts/', methods=['GET'])
 def posts():
     posts = Post.query.all()
     return render_template('posts.html', posts=posts)
@@ -123,3 +122,56 @@ def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
+
+
+@app.route('/post/new/', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = CreatePostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        body = form.body.data
+
+        post = Post(title=title, body=body, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Nice post, but you can better', 'success')
+        return redirect(url_for('posts'))
+
+    return render_template('create_post.html', form=form)
+
+
+@app.route('/posts/<int:post_id>/', methods=['GET'])
+def get_post(post_id):
+    post = Post.query.get(post_id)
+    return render_template('post.html', post=post)
+
+
+@app.route('/posts/<int:post_id>/update/', methods=['GET', 'POST'])
+@login_required
+def update_post(post_id):
+    post = Post.query.get(post_id)
+    form = UpdatePostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.body = form.body.data
+        post.timestamp = datetime.utcnow()
+        db.session.commit()
+        flash('I like it better now!', 'success')
+        return redirect(url_for('update_post', post_id=post.id))
+
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.body.data = post.body
+
+    return render_template('update_post.html', form=form, post=post)
+
+
+@app.route('/posts/delete/<int:post_id>')
+def delete_post(post_id):
+    post = Post.query.get(post_id)
+    title = post.title
+    db.session.delete(post)
+    db.session.commit()
+    flash(f'Post {title} was deleted!', 'success')
+    return redirect(url_for('posts'))

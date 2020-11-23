@@ -9,9 +9,22 @@
 {% endblock %}
 
 {% block content %}
-
+    <br>
+    <div class="container col d-flex justify-content-center">
     {% for post in posts %}
-    <h1>{{post.author.username}}</h1> says: <b>{{post.body}}</b></p>
+    <div class="card " style="width: 48rem;">
+        <div class="card-body" >
+          <h5 class="card-title text-right">{{post.author.username}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted text-right">{{post.timestamp}}</h6>
+          <h5 class="card-title"><a href="{{ url_for('get_post', post_id=post.id) }}">{{post.title}}</a></h5>
+          <p class="card-text">{{post.body}}</p>
+          <p class="card-text"><small class="text-muted">Last updated at {{post.timestamp}} </small></p>
+          {% if current_user == post.author %}
+                <button class="btn btn-outline-success"><a id="update-link" href="{{ url_for('update_post', post_id=post.id) }}">Update</button></a>
+                <button id="button-update" class="btn btn-outline-danger float-right"><a id="delete-link" href="{{ url_for('delete_post', post_id=post.id) }}">Delete</a></button>
+          {% endif %}
+        </div>
+    </div>
     {% endfor %}
-
+    </div>
 {% endblock %}

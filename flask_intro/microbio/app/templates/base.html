@@ -16,7 +16,7 @@
             <a href="{{ url_for('logout') }}">Logout</a>
             {% endif %}
             <a href="{{ url_for('posts') }}">Posts</a>
-
+            <a href="{{ url_for('new_post') }}">What's going on?</a>
         </div>
         {% for cat, msg in get_flashed_messages(True) %}
             <ul class="list-group">

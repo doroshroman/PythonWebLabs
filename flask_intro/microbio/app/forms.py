@@ -67,3 +67,23 @@ class UpdateAccountForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('Email is taken. Please choose another email!')
+
+
+class CreatePostForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired('Empty title! Are you serious?'), Length(max=100,
+                                 message='Maximum 100 characters!')])
+    
+    body = TextAreaField('Content', validators=[DataRequired('Bro, add some content.'), Length(max=140,
+                                 message='Maximum 140 characters!')])
+    
+    submit = SubmitField('Post')
+
+
+class UpdatePostForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired('Empty title! Are you serious?'), Length(max=100,
+                                 message='Maximum 100 characters!')])
+    
+    body = TextAreaField('Content', validators=[DataRequired('Bro, add some content.'), Length(max=140,
+                                 message='Maximum 140 characters!')])
+    
+    submit = SubmitField('Update')

@@ -34,3 +34,18 @@ h1 {
 #coding-img {
     width: 500px;
 }
+#delete-link{
+    text-decoration: none;
+    color: red;
+}
+#delete-link:hover{
+    color: white;
+}
+#update-link{
+    text-decoration: none;
+    color: green;
+}
+#update-link:hover{
+    color: white;
+}
+
