@@ -151,6 +151,9 @@ def get_post(post_id):
 @login_required
 def update_post(post_id):
     post = Post.query.get(post_id)
+    if current_user != post.author:
+        flash('You don\'t have enough rights to update this post', 'warning')
+        return redirect(url_for('posts'))  
     form = UpdatePostForm()
     if form.validate_on_submit():
         post.title = form.title.data
@@ -167,11 +170,15 @@ def update_post(post_id):
     return render_template('update_post.html', form=form, post=post)
 
 
-@app.route('/posts/delete/<int:post_id>')
+@app.route('/posts/<int:post_id>/delete/')
 def delete_post(post_id):
     post = Post.query.get(post_id)
-    title = post.title
-    db.session.delete(post)
-    db.session.commit()
-    flash(f'Post {title} was deleted!', 'success')
+    
+    if current_user != post.author:
+        flash('You don\'t have enough rights to delete this post', 'warning')  
+    else:
+        title = post.title
+        db.session.delete(post)
+        db.session.commit()
+        flash(f'Post {title} was deleted!', 'success')
     return redirect(url_for('posts'))
