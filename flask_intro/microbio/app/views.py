@@ -70,8 +70,21 @@ def login():
 
 @app.route('/posts/', methods=['GET'])
 def posts():
-    posts = Post.query.all()
-    return render_template('posts.html', posts=posts)
+    query = request.args.get('q')
+    
+    page = request.args.get('page')
+
+    if page and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+
+    if query:
+        posts = Post.query.filter(Post.title.contains(query) | Post.body.contains(query))
+    else:
+        posts = Post.query.order_by(Post.timestamp.desc())
+    pages = posts.paginate(page=page, per_page=5)
+    return render_template('posts.html', posts=posts, pages=pages, query=query)
 
 @app.route('/logout')
 def logout():

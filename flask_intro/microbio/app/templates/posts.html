@@ -11,7 +11,16 @@
 {% block content %}
     <br>
     <div class="container d-flex flex-column align-items-center">
-    {% for post in posts %}
+    <form action="{{ url_for('posts') }}" class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+            <input type="text" class="form-control" name="q" value="{%if query%}{{query}}{% else %}Python{% endif %}">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Search</button>
+    </form>
+    </div>
+    <br>
+    <div class="container d-flex flex-column align-items-center">
+    {% for post in pages.items %}
     <div class="card" style="width: 48rem;">
         <div class="card-body" >
           <h5 class="card-title text-right">{{post.author.username}}</h5>
@@ -48,6 +57,25 @@
     
     {% endfor %}
     </div>
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item {% if not pages.has_prev %} disabled {% endif %}">
+                <a class="page-link" href="{{ url_for('posts', page=pages.prev_num) }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a> 
+            </li>
+            {% for page in pages.iter_pages() %}
+                <li class="page-item {% if page == pages.page %} active {% endif %}">
+                    <a class="page-link" href="{{ url_for('posts', page=page) }}">{{ page }}<span class="sr-only">(current)</span></a>   
+                </li>
+            {% endfor %}
+            <li class="page-item {% if not pages.has_next %} disabled {% endif %}">
+                <a class="page-link" href="{{ url_for('posts', page=pages.next_num) }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a> 
+            </li>
+        </ul>
+    </nav>
     <script type="text/javascript">
         $('#delete-modal').on('shown.bs.modal');
     </script>
