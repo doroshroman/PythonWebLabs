@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Posts{% endblock %}
+{% from "_render_field.html" import render_field %}
+{% block content %}
+    <br>
+    <div class="container d-flex flex-column align-items-center">
+        <form action="{{ url_for('films') }}" class="form-inline">
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="text" class="form-control" name="q" value="{%if query%}{{query}}{% else %}Python{% endif %}">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Search</button>
+        </form>
+        </div>
+    <br>
+    <div class="container d-flex flex-column align-items-center">
+    {% for film in films %}
+    <div class="card" style="width: 48rem;">
+        <div class="card-body" >
+        <h5 class="card-title text-right">Film name: {{ film.name }}</h5>
+        <h5 class="card-title text-right">Film director: {{ film.director }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted text-right">Release Date: {{film.release_date}}</h6>
+        <p class="card-text">Film description: {{film.description}}</p>
+        <p class="card-text"><small class="text-muted">Film budget: {{film.budget}} </small></p>
+        <p class="card-text">Film genre: {{film.genre}}</p>
+        <button class="btn btn-outline-success"><a href="{{ url_for('update_film', film_id=film.id) }}">Update</a></button></a>
+        <button class="btn btn-outline-danger float-right"><a href="{{ url_for('delete_film', film_id=film.id) }}">Delete</a></button>
+        </div>
+    </div>
+    <br>
+    {% endfor %}
+{% endblock %}

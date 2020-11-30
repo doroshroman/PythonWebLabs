@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% from "_render_field.html" import render_field %}
+{% block title %}New Film{% endblock %}
+
+
+{% block content %}
+    <br>
+    <form method="POST" action="{{url_for('index')}}">
+        {{ form.hidden_tag() }}
+        <p class="h4">New Film</p>
+        <hr>
+        <div class="md-form form-group w-50">
+            {{ render_field(form.name) }}
+            {{ render_field(form.release_date) }}
+            {{ render_field(form.director) }}
+            {{ render_field(form.description) }}
+            {{ render_field(form.budget) }}
+            {{ render_field(form.genres) }}
+            {{ form.submit(class_="btn btn-primary") }}
+        </div>  
+    </form>
+{% endblock %}
