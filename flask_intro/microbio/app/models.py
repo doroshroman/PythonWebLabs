@@ -4,6 +4,7 @@ from flask_bcrypt import generate_password_hash
 from flask_bcrypt import check_password_hash
 from flask_login import UserMixin
 
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
@@ -17,6 +18,7 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.String(200), nullable=True)
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     password_hash = db.Column(db.String(128))
+    admin = db.Column(db.Boolean, default=False)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __repr__(self):
@@ -28,7 +30,8 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
     
-    
+    def is_admin(self):
+        return True if self.admin else False
 
 
 class Post(db.Model):

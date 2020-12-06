@@ -87,3 +87,21 @@ class UpdatePostForm(FlaskForm):
                                  message='Maximum 140 characters!')])
     
     submit = SubmitField('Update')
+
+
+class AdminUserCreateForm(RegistrationForm):
+    admin = BooleanField('Is Admin?', default="checked")
+    submit = SubmitField('Create')
+
+
+class AdminUserUpdateForm(FlaskForm):
+    username = StringField('Username', validators=[Length(min=4, max=25,
+                                              message='This field length must be between 4 and 25 characters'),
+                                              DataRequired('This field is required'),
+                                              Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
+                                              'Username must have only '
+                                              'letters, numbers, dots or '
+                                              'underscores')])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    admin = BooleanField('Is Admin?', default="checked")
+    submit = SubmitField('Edit')
