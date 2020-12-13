@@ -4,7 +4,7 @@
 {% block title %}Create New Post{% endblock %}
 {% block content %}
     <br>
-    <form method="POST" action="{{url_for('new_post', next=request.args.get('next'))}}">
+    <form method="POST" action="{{url_for('posts.new_post', next=request.args.get('next'))}}">
         {{ form.hidden_tag() }}
         <p class="h4">New Post</p>
         <hr>

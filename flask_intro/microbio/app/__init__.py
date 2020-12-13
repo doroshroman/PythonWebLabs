@@ -6,21 +6,45 @@ from flask_login import LoginManager
 from flask_admin import Admin 
 from flask_ckeditor import CKEditor
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
-login = LoginManager(app)
-login.login_view = 'login'
-login.login_message_category = 'info'
+db = SQLAlchemy()
 
-ckeditor = CKEditor(app)
+def create_app(app):
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    
+    db.init_app(app)
 
-from app import modelviews
-from app import models
-from flask_admin.contrib.sqla import ModelView
+    bcrypt = Bcrypt(app)
+    login = LoginManager(app)
+    login.login_view = 'auth.login'
+    login.login_message_category = 'info'
 
-admin = Admin(app, index_view=modelviews.MyAdminIndexView())
-admin.add_view(modelviews.UserAdminView(models.User, db.session))
-admin.add_view(modelviews.PostAdminView(models.Post, db.session))
-from app import views
+    ckeditor = CKEditor(app)
+
+    from app import modelviews
+    from app.blueprints.main.views import main
+    from app.blueprints.auth.views import auth
+    from app.blueprints.posts.views import pb
+    from app.blueprints.administrator.views import administrator
+    from app.blueprints.account.views import ab
+    from flask_admin.contrib.sqla import ModelView
+    from app import models
+
+    @login.user_loader
+    def load_user(user_id):
+        return models.User.query.get(int(user_id))
+
+
+    app.register_blueprint(main)
+    app.register_blueprint(auth)
+    app.register_blueprint(pb)
+    app.register_blueprint(administrator)
+    app.register_blueprint(ab)
+
+
+    admin = Admin(app, index_view=modelviews.MyAdminIndexView())
+    admin.add_view(modelviews.UserAdminView(models.User, db.session))
+    admin.add_view(modelviews.PostAdminView(models.Post, db.session))
+    
+    
+    return app

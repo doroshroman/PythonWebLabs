@@ -5,7 +5,6 @@ from wtforms.validators import InputRequired, Length, Email, EqualTo, DataRequir
 from .models import User
 from flask_login import current_user
 
-
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[

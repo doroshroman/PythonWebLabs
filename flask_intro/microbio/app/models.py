@@ -1,13 +1,8 @@
-from app import db, login
+from . import db
 from datetime import datetime
 from flask_bcrypt import generate_password_hash
 from flask_bcrypt import check_password_hash
 from flask_login import UserMixin
-
-
-@login.user_loader
-def load_user(id):
-    return User.query.get(int(id))
 
     
 class User(UserMixin, db.Model):

@@ -12,7 +12,7 @@
             </div>
         </div>
         <br>
-        <form method="POST" action="{{url_for('account', next=request.args.get('next'))}}" enctype="multipart/form-data">
+        <form method="POST" action="{{url_for('account.account', next=request.args.get('next'))}}" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <p class="h4">Account info</p>
             <hr>
