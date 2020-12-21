@@ -36,5 +36,15 @@ class Post(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'body': self.body,
+            'timestamp': self.timestamp,
+            'author': self.user_id
+        }
+        
     def __repr__(self):
         return f'<Post {self.body}>'

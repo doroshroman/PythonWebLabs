@@ -27,6 +27,7 @@ def create_app(app):
     from app.blueprints.posts.views import pb
     from app.blueprints.administrator.views import administrator
     from app.blueprints.account.views import ab
+    from app.blueprints.api.views import api
     from flask_admin.contrib.sqla import ModelView
     from app import models
 
@@ -40,7 +41,7 @@ def create_app(app):
     app.register_blueprint(pb)
     app.register_blueprint(administrator)
     app.register_blueprint(ab)
-
+    app.register_blueprint(api)
 
     admin = Admin(app, index_view=modelviews.MyAdminIndexView())
     admin.add_view(modelviews.UserAdminView(models.User, db.session))
