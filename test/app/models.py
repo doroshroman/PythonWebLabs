@@ -10,6 +10,18 @@ class Film(db.Model):
     budget = db.Column(db.Float, nullable=False)
     genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'))
 
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'release_date': self.release_date,
+            'director': self.director,
+            'description': self.description,
+            'budget': self.budget,
+            'genre_id': self.genre_id
+        }
+
     def __repr__(self):
         return f"Name: {self.name} Genre: {self.genre} Release_date: {self.release_date} Director: {self.director} Description: {self.description} Budget: {self.budget}"
 
